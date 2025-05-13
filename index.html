@@ -1,230 +1,1119 @@
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pioneers in Science - Interactive Gallery</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
     <style>
-        :root {
-            --color-primary: #6366f1;
-            --color-secondary: #8b5cf6;
-            --color-accent: #f97316;
-            --color-dark: #1f2937;
-            --color-light: #f9fafb;
-        }
+      :root {
+        --color-primary: #6366f1;
+        --color-secondary: #8b5cf6;
+        --color-accent: #f97316;
+        --color-dark: #1f2937;
+        --color-light: #f9fafb;
+      }
 
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background-color: #0f172a;
-            color: #f8fafc;
-            overflow-x: hidden;
-        }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background-color: #0f172a;
+        color: #f8fafc;
+        overflow-x: hidden;
+      }
 
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Space Grotesk', sans-serif;
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "Space Grotesk", sans-serif;
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
 
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+      }
 
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-        }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+      }
 
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.5);
-        }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+      }
 
-        .animate-glow {
-            animation: glow 3s ease-in-out infinite alternate;
-        }
+      .animate-glow {
+        animation: glow 3s ease-in-out infinite alternate;
+      }
 
-        @keyframes glow {
-            from {
-                box-shadow: 0 0 10px -10px #6366f1;
-            }
-            to {
-                box-shadow: 0 0 20px 10px #ec4899;
-            }
+      @keyframes glow {
+        from {
+          box-shadow: 0 0 10px -10px #6366f1;
         }
-
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.3;
-            pointer-events: none;
+        to {
+          box-shadow: 0 0 20px 10px #ec4899;
         }
+      }
 
-        .hero-gradient {
-            background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.3), transparent 70%),
-            radial-gradient(circle at bottom left, rgba(236, 72, 153, 0.3), transparent 70%);
+      .hero-gradient {
+        background:
+          radial-gradient(
+            circle at top right,
+            rgba(139, 92, 246, 0.3),
+            transparent 70%
+          ),
+          radial-gradient(
+            circle at bottom left,
+            rgba(236, 72, 153, 0.3),
+            transparent 70%
+          );
+      }
+
+      .text-gradient {
+        background: linear-gradient(to right, #6366f1, #ec4899);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      /* Galaxy background effect */
+      .galaxy-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        opacity: 0.7;
+        background: linear-gradient(
+          135deg,
+          #27187e 0%,
+          #341266 25%,
+          #3b1e6c 50%,
+          #421e4a 75%,
+          #27187e 100%
+        );
+      }
+
+      .stars {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      @keyframes twinkle {
+        0%,
+        100% {
+          opacity: 0;
         }
-
-        .text-gradient {
-            background: linear-gradient(to right, #6366f1, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        50% {
+          opacity: 1;
         }
+      }
 
+      .hero-scientists {
+        position: relative;
+        z-index: 10;
+      }
 
-        /* Galaxy background effect */
-        .galaxy-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            opacity: 0.7;
-            background: linear-gradient(135deg, #27187E 0%, #341266 25%, #3B1E6C 50%, #421E4A 75%, #27187E 100%);
-        }
+      .hero-scientist-img {
+        border-radius: 1rem;
+        overflow: hidden;
+        position: relative;
+      }
 
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
+      .hero-scientist-img img {
+        transition: transform 0.5s ease;
+      }
 
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 4s infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
-        }
-
-        .hero-scientists {
-            position: relative;
-            z-index: 10;
-        }
-
-        .hero-scientist-img {
-            border-radius: 1rem;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .hero-scientist-img img {
-            transition: transform 0.5s ease;
-        }
-
-        .hero-scientist-img:hover img {
-            transform: scale(1.05);
-        }
+      .hero-scientist-img:hover img {
+        transform: scale(1.05);
+      }
     </style>
-</head>
-<body class="custom-scrollbar">
-<!-- Galaxy Background -->
-<div class="galaxy-bg"></div>
-<div class="stars" id="stars"></div>
+  </head>
+  <body class="custom-scrollbar">
+    <!-- Galaxy Background -->
+    <div class="galaxy-bg"></div>
+    <div class="stars" id="stars"></div>
 
-<!-- Hero Section -->
-<section class="relative hero-gradient min-h-screen flex items-center justify-center overflow-hidden py-20">
-    <div class="absolute inset-0 z-0 overflow-hidden">
-        <svg class="absolute left-0 top-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <defs>
-                <radialGradient id="heroglow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                    <stop offset="0%" stop-color="rgba(99, 102, 241, 0.15)" />
-                    <stop offset="100%" stop-color="rgba(15, 23, 42, 0)" />
-                </radialGradient>
-            </defs>
-            <circle cx="50" cy="20" r="20" fill="url(#heroglow)" class="animate-pulse" style="animation-duration: 8s;" />
+    <!-- Hero Section -->
+    <section
+      class="relative hero-gradient min-h-screen flex items-center justify-center overflow-hidden py-20"
+    >
+      <div class="absolute inset-0 z-0 overflow-hidden">
+        <svg
+          class="absolute left-0 top-0 h-full w-full"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+        >
+          <defs>
+            <radialGradient
+              id="heroglow"
+              cx="50%"
+              cy="50%"
+              r="50%"
+              fx="50%"
+              fy="50%"
+            >
+              <stop offset="0%" stop-color="rgba(99, 102, 241, 0.15)" />
+              <stop offset="100%" stop-color="rgba(15, 23, 42, 0)" />
+            </radialGradient>
+          </defs>
+          <circle
+            cx="50"
+            cy="20"
+            r="20"
+            fill="url(#heroglow)"
+            class="animate-pulse"
+            style="animation-duration: 8s"
+          />
         </svg>
-    </div>
+      </div>
 
-    <div class="container mx-auto px-6 relative z-10">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-10">
-            <div class="md:w-1/2 space-y-6">
-                <h1 class="text-5xl md:text-7xl font-bold leading-tight">
-                    <span class="text-gradient">Pioneers</span> in
-                    <span class="relative text-white">
-                            Science
-                            <svg class="absolute -bottom-2 left-0 w-full" height="6" viewBox="0 0 200 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3 3C42.1671 3.33333 81.3343 3.66667 120.501 4C159.668 4.33333 198.835 4.66667 238.001 5" stroke="url(#paint0_linear)" stroke-width="5" stroke-linecap="round"/>
-                                <defs>
-                                    <linearGradient id="paint0_linear" x1="3" y1="3" x2="238" y2="3" gradientUnits="userSpaceOnUse">
-                                        <stop stop-color="#6366F1"/>
-                                        <stop offset="1" stop-color="#EC4899"/>
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-                        </span>
-                </h1>
-                <p class="text-xl text-slate-300 max-w-xl">Explore the brilliant minds who shaped our understanding of the universe through interactive cards — hover to discover their remarkable contributions.</p>
-                <div class="pt-4">
-                    <a href="#scientists" class="group inline-flex items-center gap-2 px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-full transition-all duration-300 shadow-lg hover:shadow-indigo-500/50">
-                        <span>Discover the Pioneers</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </a>
-                </div>
+      <div class="container mx-auto px-6 relative z-10">
+        <div
+          class="flex flex-col md:flex-row items-center justify-between gap-10"
+        >
+          <div class="md:w-1/2 space-y-6">
+            <h1 class="text-5xl md:text-7xl font-bold leading-tight">
+              <span class="text-gradient">Pioneers</span> in
+              <span class="relative text-white">
+                Science
+                <svg
+                  class="absolute -bottom-2 left-0 w-full"
+                  height="6"
+                  viewBox="0 0 200 6"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 3C42.1671 3.33333 81.3343 3.66667 120.501 4C159.668 4.33333 198.835 4.66667 238.001 5"
+                    stroke="url(#paint0_linear)"
+                    stroke-width="5"
+                    stroke-linecap="round"
+                  />
+                  <defs>
+                    <linearGradient
+                      id="paint0_linear"
+                      x1="3"
+                      y1="3"
+                      x2="238"
+                      y2="3"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#6366F1" />
+                      <stop offset="1" stop-color="#EC4899" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </span>
+            </h1>
+            <p class="text-xl text-slate-300 max-w-xl">
+              Explore the brilliant minds who shaped our understanding of the
+              universe through interactive cards — hover to discover their
+              remarkable contributions.
+            </p>
+            <div class="pt-4">
+              <a
+                href="#scientists"
+                class="group inline-flex items-center gap-2 px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-full transition-all duration-300 shadow-lg hover:shadow-indigo-500/50"
+              >
+                <span>Discover the Pioneers</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 group-hover:translate-x-1 transition-transform"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </a>
             </div>
+          </div>
 
-            <div class="md:w-1/2 relative hero-scientists">
-                <div class="relative z-10 grid grid-cols-2 gap-4">
-                    <div class="space-y-4">
-                        <div class="hero-scientist-img rounded-2xl overflow-hidden h-[15rem] animate-glow shadow-xl transform hover:scale-105 transition-transform duration-300" style="animation-delay: 0s;">
-                            <img src="./images/EM.jpg" alt="Lise Meitner" class="w-full h-full object-cover" onerror="this.src='/api/placeholder/200/150'">
-                        </div>
-                        <div class="hero-scientist-img rounded-2xl overflow-hidden h-56 animate-glow shadow-xl transform hover:scale-105 transition-transform duration-300" style="animation-delay: 1s;">
-                            <img src="./images/IN.jpg" alt="Ida Noddack" class="w-full h-full object-cover" onerror="this.src='/api/placeholder/200/250'">
-                        </div>
-                    </div>
-                    <div class="space-y-4 pt-10">
-                        <div class="hero-scientist-img rounded-2xl overflow-hidden h-56 animate-glow shadow-xl transform hover:scale-105 transition-transform duration-300" style="animation-delay: 0.5s;">
-                            <img src="./images/csw.jpg" alt="Chien-Shiung Wu" class="w-full h-full object-cover" onerror="this.src='/api/placeholder/200/250'">
-                        </div>
-                        <div class="hero-scientist-img rounded-2xl overflow-hidden h-64 animate-glow shadow-xl transform hover:scale-105 transition-transform duration-300" style="animation-delay: 1.5s;">
-                            <img src="./images/JAH.jpeg" alt="James A. Harris" class="w-full h-full object-cover" onerror="this.src='/api/placeholder/200/150'">
-                        </div>
-                    </div>
+          <div class="md:w-1/2 relative hero-scientists">
+            <div class="relative z-10 grid grid-cols-2 gap-4">
+              <div class="space-y-4">
+                <div
+                  class="hero-scientist-img rounded-2xl overflow-hidden h-[15rem] animate-glow shadow-xl transform hover:scale-105 transition-transform duration-300"
+                  style="animation-delay: 0s"
+                >
+                  <img
+                    src="./images/EM.jpg"
+                    alt="Lise Meitner"
+                    class="w-full h-full object-cover"
+                    onerror="this.src='/api/placeholder/200/150'"
+                  />
                 </div>
-                <div class="absolute -inset-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+                <div
+                  class="hero-scientist-img rounded-2xl overflow-hidden h-56 animate-glow shadow-xl transform hover:scale-105 transition-transform duration-300"
+                  style="animation-delay: 1s"
+                >
+                  <img
+                    src="./images/IN.jpg"
+                    alt="Ida Noddack"
+                    class="w-full h-full object-cover"
+                    onerror="this.src='/api/placeholder/200/250'"
+                  />
+                </div>
+              </div>
+              <div class="space-y-4 pt-10">
+                <div
+                  class="hero-scientist-img rounded-2xl overflow-hidden h-56 animate-glow shadow-xl transform hover:scale-105 transition-transform duration-300"
+                  style="animation-delay: 0.5s"
+                >
+                  <img
+                    src="./images/csw.jpg"
+                    alt="Chien-Shiung Wu"
+                    class="w-full h-full object-cover"
+                    onerror="this.src='/api/placeholder/200/250'"
+                  />
+                </div>
+                <div
+                  class="hero-scientist-img rounded-2xl overflow-hidden h-64 animate-glow shadow-xl transform hover:scale-105 transition-transform duration-300"
+                  style="animation-delay: 1.5s"
+                >
+                  <img
+                    src="./images/JAH.jpeg"
+                    alt="James A. Harris"
+                    class="w-full h-full object-cover"
+                    onerror="this.src='/api/placeholder/200/150'"
+                  />
+                </div>
+              </div>
             </div>
+            <div
+              class="absolute -inset-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full blur-3xl opacity-20 animate-pulse"
+            ></div>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+      <div
+        class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-10 w-10 text-white opacity-70"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 14l-7 7m0 0l-7-7m7 7V3"
+          />
         </svg>
-    </div>
-</section>
-
-<!-- Scientists Gallery Section -->
-<section id="scientists" class="py-20 relative">
-    <div class="absolute inset-0 z-0">
-        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-            <defs>
-                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1" />
-                </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>
-    </div>
-
-    <section class="container mx-auto px-6 relative z-10">
-        The scientifis stuff
-
+      </div>
     </section>
-</body>
+
+    <!-- Scientists Gallery Section -->
+    <section id="scientists" class="py-20 relative">
+      <div class="absolute inset-0 z-0">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+          <defs>
+            <pattern
+              id="grid"
+              width="40"
+              height="40"
+              patternUnits="userSpaceOnUse"
+            >
+              <path
+                d="M 40 0 L 0 0 0 40"
+                fill="none"
+                stroke="rgba(255,255,255,0.03)"
+                stroke-width="1"
+              />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
+      </div>
+
+      <section class="container mx-auto px-6 relative z-10">
+        <div class="container mx-auto px-6 relative z-10">
+          <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">
+              <span class="text-gradient">Brilliant Minds</span> of Science
+            </h2>
+            <p class="text-xl text-slate-300 max-w-3xl mx-auto">
+              Hover over each card to discover the remarkable contributions of
+              these pioneering scientists who pushed the boundaries of human
+              knowledge.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Lise Meitner Card -->
+            <div class="flip-card h-[500px]">
+              <div class="flip-card-inner">
+                <div
+                  class="flip-card-front bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-xl"
+                >
+                  <img
+                    src="./images/EM.jpg"
+                    alt="Lise Meitner"
+                    class="w-40 h-40 rounded-full object-cover mb-4 ring-4 ring-white/20"
+                    onerror="this.src='/api/placeholder/160/160'"
+                  />
+                  <h3 class="text-2xl font-bold mb-2">Lise Meitner</h3>
+                  <p class="text-lg text-indigo-100">1878 - 1968</p>
+                  <p class="text-sm text-indigo-200 mt-4 italic">
+                    "Co-discovered nuclear fission"
+                  </p>
+                </div>
+                <div
+                  class="flip-card-back bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 shadow-xl overflow-y-auto custom-scrollbar"
+                >
+                  <h3 class="text-xl font-bold mb-3 text-gradient">
+                    Elise Meitner
+                  </h3>
+                  <div class="space-y-2 text-sm">
+                    <p>
+                      <span class="font-semibold text-indigo-400">Born:</span>
+                      November 7, 1878
+                    </p>
+                    <p>
+                      <span class="font-semibold text-indigo-400">Died:</span>
+                      October 27, 1968
+                    </p>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-indigo-400 mb-1">
+                        Most Known For:
+                      </p>
+                      <p>
+                        Co-discovery and explanation of nuclear fission; coined
+                        the term "fission"
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-indigo-400 mb-1">
+                        Famous Publication:
+                      </p>
+                      <p class="italic">
+                        "Disintegration of Uranium by Neutrons: a New Type of
+                        Nuclear Reaction" (1939)
+                      </p>
+                      <p class="text-xs text-slate-400">
+                        With: Otto Hahn, Fritz Strassmann
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-indigo-400 mb-1">Awards:</p>
+                      <p>
+                        Enrico Fermi Award, Max Planck Medal, Lieben Prize, Otto
+                        Hahn Prize
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-indigo-400 mb-1">
+                        Personality:
+                      </p>
+                      <p>
+                        Persistent, highly curious, academically driven; one of
+                        the first women to earn a doctorate in physics
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-indigo-400 mb-1">
+                        Major Contributions:
+                      </p>
+                      <ul class="list-disc list-inside text-sm">
+                        <li>Nuclear fission mechanism</li>
+                        <li>Discovery of protactinium</li>
+                        <li>Research on beta decay</li>
+                        <li>Nuclear isomerism studies</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chien-Shiung Wu Card -->
+            <div class="flip-card h-[500px]">
+              <div class="flip-card-inner">
+                <div
+                  class="flip-card-front bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-xl"
+                >
+                  <img
+                    src="./images/csw.jpg"
+                    alt="Chien-Shiung Wu"
+                    class="w-40 h-40 rounded-full object-cover mb-4 ring-4 ring-white/20"
+                    onerror="this.src='/api/placeholder/160/160'"
+                  />
+                  <h3 class="text-2xl font-bold mb-2">Chien-Shiung Wu</h3>
+                  <p class="text-lg text-purple-100">1912 - 1997</p>
+                  <p class="text-sm text-purple-200 mt-4 italic">
+                    "Proved parity violation"
+                  </p>
+                </div>
+                <div
+                  class="flip-card-back bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 shadow-xl overflow-y-auto custom-scrollbar"
+                >
+                  <h3 class="text-xl font-bold mb-3 text-gradient">
+                    Chien-Shiung Wu
+                  </h3>
+                  <div class="space-y-2 text-sm">
+                    <p>
+                      <span class="font-semibold text-purple-400">Born:</span>
+                      May 31, 1912
+                    </p>
+                    <p>
+                      <span class="font-semibold text-purple-400">Died:</span>
+                      February 16, 1997
+                    </p>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-purple-400 mb-1">
+                        Most Known For:
+                      </p>
+                      <p>
+                        Experimental confirmation of the violation of parity
+                        conservation in weak nuclear interactions (Wu
+                        experiment)
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-purple-400 mb-1">
+                        Famous Publication:
+                      </p>
+                      <p class="italic">
+                        "Experimental Test of Parity Conservation in Beta Decay"
+                        (1957)
+                      </p>
+                      <p class="text-xs text-slate-400">
+                        With: E. Ambler, R.W. Hayward, D.D. Hoppes, R.P. Hudson
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-purple-400 mb-1">Awards:</p>
+                      <p>
+                        Wolf Prize in Physics, National Medal of Science,
+                        Comstock Prize
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-purple-400 mb-1">
+                        Personality:
+                      </p>
+                      <p>
+                        Exceptionally bright, determined, encouraged by
+                        progressive parents to pursue education
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-purple-400 mb-1">
+                        Major Contributions:
+                      </p>
+                      <ul class="list-disc list-inside text-sm">
+                        <li>Demonstrated parity violation in beta decay</li>
+                        <li>Advanced understanding of weak nuclear force</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Juliet Lee-Franzini Card -->
+            <div class="flip-card h-[500px]">
+              <div class="flip-card-inner">
+                <div
+                  class="flip-card-front bg-gradient-to-br from-pink-600 to-orange-600 rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-xl"
+                >
+                  <img
+                    src="./images/JLF.jpg"
+                    alt="Juliet Lee-Franzini"
+                    class="w-40 h-40 rounded-full object-cover mb-4 ring-4 ring-white/20"
+                    onerror="this.src='/api/placeholder/160/160'"
+                  />
+                  <h3 class="text-2xl font-bold mb-2">Juliet Lee-Franzini</h3>
+                  <p class="text-lg text-orange-100">1933 - 2014</p>
+                  <p class="text-sm text-orange-200 mt-4 italic">
+                    "Muon decay & mesons pioneer"
+                  </p>
+                </div>
+                <div
+                  class="flip-card-back bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 shadow-xl overflow-y-auto custom-scrollbar"
+                >
+                  <h3 class="text-xl font-bold mb-3 text-gradient">
+                    Juliet Lee-Franzini
+                  </h3>
+                  <div class="space-y-2 text-sm">
+                    <p>
+                      <span class="font-semibold text-orange-400">Born:</span>
+                      1933
+                    </p>
+                    <p>
+                      <span class="font-semibold text-orange-400">Died:</span>
+                      January 19, 2014
+                    </p>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-orange-400 mb-1">
+                        Most Known For:
+                      </p>
+                      <p>
+                        Pioneering studies of muon decay spectra and
+                        confirmation of the V-A nature of the weak force
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-orange-400 mb-1">
+                        Famous Publication:
+                      </p>
+                      <p class="italic">
+                        "Observation of Excited B Mesons" (1986)
+                      </p>
+                      <p class="text-xs text-slate-400">
+                        With: P. Franzini, P. Tuts, et al.
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-orange-400 mb-1">Awards:</p>
+                      <p>Fellow of the American Physical Society</p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-orange-400 mb-1">
+                        Personality:
+                      </p>
+                      <p>
+                        Born in Paris to Chinese parents, educated in the US;
+                        known for intellectual curiosity and perseverance
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-orange-400 mb-1">
+                        Major Contributions:
+                      </p>
+                      <ul class="list-disc list-inside text-sm">
+                        <li>Muon decay and weak interactions</li>
+                        <li>Meson spectroscopy</li>
+                        <li>Particle accelerator experiments</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ida Noddack Card -->
+            <div class="flip-card h-[500px]">
+              <div class="flip-card-inner">
+                <div
+                  class="flip-card-front bg-gradient-to-br from-orange-600 to-yellow-600 rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-xl"
+                >
+                  <img
+                    src="./images/IN.jpg"
+                    alt="Ida Noddack"
+                    class="w-40 h-40 rounded-full object-cover mb-4 ring-4 ring-white/20"
+                    onerror="this.src='/api/placeholder/160/160'"
+                  />
+                  <h3 class="text-2xl font-bold mb-2">Ida Noddack</h3>
+                  <p class="text-lg text-yellow-100">1896 - 1978</p>
+                  <p class="text-sm text-yellow-200 mt-4 italic">
+                    "Discovered rhenium"
+                  </p>
+                </div>
+                <div
+                  class="flip-card-back bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 shadow-xl overflow-y-auto custom-scrollbar"
+                >
+                  <h3 class="text-xl font-bold mb-3 text-gradient">
+                    Ida Eva Tacke Noddack
+                  </h3>
+                  <div class="space-y-2 text-sm">
+                    <p>
+                      <span class="font-semibold text-yellow-400">Born:</span>
+                      February 25, 1896
+                    </p>
+                    <p>
+                      <span class="font-semibold text-yellow-400">Died:</span>
+                      September 24, 1978
+                    </p>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-yellow-400 mb-1">
+                        Most Known For:
+                      </p>
+                      <p>
+                        Co-discovery of rhenium; first to suggest the
+                        possibility of nuclear fission in 1934
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-yellow-400 mb-1">
+                        Famous Publication:
+                      </p>
+                      <p class="italic">"Über das Element 75" (1925)</p>
+                      <p class="text-xs text-slate-400">
+                        With: Walter Noddack, Otto Berg
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-yellow-400 mb-1">Awards:</p>
+                      <p>Liebig Medal, German Chemical Society Prize</p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-yellow-400 mb-1">
+                        Personality:
+                      </p>
+                      <p>
+                        Exceptionally meticulous, curious, and persistent in
+                        laboratory work
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-yellow-400 mb-1">
+                        Major Contributions:
+                      </p>
+                      <ul class="list-disc list-inside text-sm">
+                        <li>Discovery of rhenium</li>
+                        <li>Early hypothesis of nuclear fission</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fred Begay Card -->
+            <div class="flip-card h-[500px]">
+              <div class="flip-card-inner">
+                <div
+                  class="flip-card-front bg-gradient-to-br from-yellow-600 to-green-600 rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-xl"
+                >
+                  <img
+                    src="./images/FB.jpg"
+                    alt="Fred Begay"
+                    class="w-40 h-40 rounded-full object-cover mb-4 ring-4 ring-white/20"
+                    onerror="this.src='/api/placeholder/160/160'"
+                  />
+                  <h3 class="text-2xl font-bold mb-2">Fred Begay</h3>
+                  <p class="text-lg text-green-100">1932 - 2013</p>
+                  <p class="text-sm text-green-200 mt-4 italic">
+                    "Fusion physics pioneer"
+                  </p>
+                </div>
+                <div
+                  class="flip-card-back bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 shadow-xl overflow-y-auto custom-scrollbar"
+                >
+                  <h3 class="text-xl font-bold mb-3 text-gradient">
+                    Fred Begay
+                  </h3>
+                  <div class="space-y-2 text-sm">
+                    <p>
+                      <span class="font-semibold text-green-400">Born:</span>
+                      July 2, 1932
+                    </p>
+                    <p>
+                      <span class="font-semibold text-green-400">Died:</span>
+                      April 30, 2013
+                    </p>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-green-400 mb-1">
+                        Most Known For:
+                      </p>
+                      <p>
+                        Research on controlled thermonuclear fusion and plasma
+                        physics; work on soliton turbulence in plasmas
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-green-400 mb-1">
+                        Famous Publication:
+                      </p>
+                      <p class="italic">
+                        "Nonlinear Plasma Phenomena in Laser-Produced Plasmas"
+                        (1970s)
+                      </p>
+                      <p class="text-xs text-slate-400">With: Begay, et al.</p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-green-400 mb-1">Awards:</p>
+                      <p>
+                        Noted for outreach and science communication within the
+                        Navajo Nation
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-green-400 mb-1">
+                        Personality:
+                      </p>
+                      <p>
+                        Curious, resilient, deeply connected to Navajo/Ute
+                        heritage; overcame adversity in education
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-green-400 mb-1">
+                        Major Contributions:
+                      </p>
+                      <ul class="list-disc list-inside text-sm">
+                        <li>Plasma physics</li>
+                        <li>Controlled thermonuclear fusion research</li>
+                        <li>Bridged indigenous knowledge and modern science</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- James A. Harris Card -->
+            <div class="flip-card h-[500px]">
+              <div class="flip-card-inner">
+                <div
+                  class="flip-card-front bg-gradient-to-br from-green-600 to-blue-600 rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-xl"
+                >
+                  <img
+                    src="./images/JAH.jpeg"
+                    alt="James A. Harris"
+                    class="w-40 h-40 rounded-full object-cover mb-4 ring-4 ring-white/20"
+                    onerror="this.src='/api/placeholder/160/160'"
+                  />
+                  <h3 class="text-2xl font-bold mb-2">James A. Harris</h3>
+                  <p class="text-lg text-blue-100">1932 - 2000</p>
+                  <p class="text-sm text-blue-200 mt-4 italic">
+                    "Co-discovered superheavy elements"
+                  </p>
+                </div>
+                <div
+                  class="flip-card-back bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 shadow-xl overflow-y-auto custom-scrollbar"
+                >
+                  <h3 class="text-xl font-bold mb-3 text-gradient">
+                    James Andrew Harris
+                  </h3>
+                  <div class="space-y-2 text-sm">
+                    <p>
+                      <span class="font-semibold text-blue-400">Born:</span>
+                      March 26, 1932
+                    </p>
+                    <p>
+                      <span class="font-semibold text-blue-400">Died:</span>
+                      December 12, 2000
+                    </p>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-blue-400 mb-1">
+                        Most Known For:
+                      </p>
+                      <p>
+                        Co-discovery of elements 104 (rutherfordium) and 105
+                        (dubnium)
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-blue-400 mb-1">
+                        Famous Publication:
+                      </p>
+                      <p class="italic">
+                        "Element 104: New Isotope of Element 104" (1969)
+                      </p>
+                      <p class="text-xs text-slate-400">
+                        With: Albert Ghiorso, et al.
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-blue-400 mb-1">Awards:</p>
+                      <p>
+                        American Chemical Society Award for Nuclear Chemistry
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-blue-400 mb-1">
+                        Personality:
+                      </p>
+                      <p>
+                        Persistent, detail-oriented, and passionate about
+                        chemistry
+                      </p>
+                    </div>
+
+                    <div class="pt-3">
+                      <p class="font-semibold text-blue-400 mb-1">
+                        Major Contributions:
+                      </p>
+                      <ul class="list-disc list-inside text-sm">
+                        <li>Synthesis of superheavy elements</li>
+                        <li>Nuclear chemistry of transactinides</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- References Section -->
+      <section class="py-16 bg-slate-900/50 relative">
+        <div class="container mx-auto px-6">
+          <h2 class="text-3xl font-bold mb-8 text-center text-gradient">
+            References
+          </h2>
+          <div class="max-w-4xl mx-auto space-y-2 text-sm text-slate-300">
+            <p>
+              Atomic Heritage Foundation. (n.d.). <em>Lise Meitner</em>.
+              Retrieved from
+              https://ahf.nuclearmuseum.org/ahf/profile/lise-meitner/
+            </p>
+            <p>
+              Lee-Franzini, J. (n.d.).
+              <em>Contributions of 20th century women to physics</em>. UCLA
+              Library. Retrieved from
+              http://cwp.library.ucla.edu/Phase2/Lee-Franzini,_Juliet@901234567.html
+            </p>
+            <p>
+              Meitner, L. (1968). <em>Nuclear fission and nuclear energy</em>.
+              In Atomic Archive. Retrieved from
+              https://www.atomicarchive.com/resources/biographies/meitner.html
+            </p>
+            <p>
+              Nuclear Museum. (n.d.). <em>Fred Begay</em>. Retrieved from
+              https://onwildlife.org/notable-figures-in-science/fred-begay/
+            </p>
+            <p>
+              Office of Research on Women's Health. (2007-2008).
+              <em>NIH women in science</em>. U.S. Department of Health and Human
+              Services.
+            </p>
+            <p>
+              SmarterMSP. (n.d.).
+              <em
+                >Pioneers in tech: Fred Begay, the first Navajo to earn a PhD in
+                physics</em
+              >. Retrieved from
+              https://smartermsp.com/pioneers-in-tech-fred-begay-the-first-navajo-to-earn-a-phd-in-physics/
+            </p>
+            <p>
+              United States Environmental Protection Agency. (n.d.).
+              <em>Women in radiation history: Lise Meitner</em>. Retrieved from
+              https://www.epa.gov/radtown/women-radiation-history-lise-meitner
+            </p>
+            <p>
+              Wikipedia. (2024). <em>Fred Begay</em>. Retrieved from
+              https://en.wikipedia.org/wiki/Fred_Begay
+            </p>
+            <p>
+              Wikipedia. (2024). <em>Juliet Lee-Franzini</em>. Retrieved from
+              https://en.wikipedia.org/wiki/Juliet_Lee-Franzini
+            </p>
+            <p>
+              Wikipedia. (2024). <em>Lise Meitner</em>. Retrieved from
+              https://en.wikipedia.org/wiki/Lise_Meitner
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="py-8 bg-slate-950 text-center">
+        <p class="text-slate-400 text-sm">Created by Jason Cameron • 2024</p>
+      </footer>
+    </section>
+  </body>
+  <style>
+    .flip-card {
+      background-color: transparent;
+      perspective: 1000px;
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+
+    .flip-card:hover .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+
+    .flip-card-back {
+      transform: rotateY(180deg);
+    }
+  </style>
+
+  <script>
+    // Initialize GSAP animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Animate cards on scroll
+    const cards = document.querySelectorAll(".flip-card");
+    cards.forEach((card, index) => {
+      gsap.fromTo(
+        card,
+        {
+          opacity: 0,
+          y: 50,
+          scale: 0.9,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          delay: index * 0.1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse",
+          },
+        },
+      );
+    });
+
+    // Create galaxy stars
+    function createStars() {
+      const starsContainer = document.getElementById("stars");
+      const starCount = 200;
+
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement("div");
+        star.classList.add("star");
+
+        const size = Math.random() * 3 + 1;
+        star.style.width = size + "px";
+        star.style.height = size + "px";
+
+        star.style.left = Math.random() * 100 + "%";
+        star.style.top = Math.random() * 100 + "%";
+
+        star.style.animationDelay = Math.random() * 4 + "s";
+        star.style.animationDuration = Math.random() * 3 + 2 + "s";
+
+        starsContainer.appendChild(star);
+      }
+    }
+
+    createStars();
+
+    // Add parallax effect to hero section
+    window.addEventListener("scroll", () => {
+      const scrolled = window.pageYOffset;
+      const parallaxElements = document.querySelectorAll(".hero-gradient");
+
+      parallaxElements.forEach((element) => {
+        const speed = 0.5;
+        element.style.transform = `translateY(${scrolled * speed}px)`;
+      });
+    });
+
+    // Add floating animation to particles
+    function createParticles() {
+      const particlesContainer = document.createElement("div");
+      particlesContainer.style.position = "fixed";
+      particlesContainer.style.top = "0";
+      particlesContainer.style.left = "0";
+      particlesContainer.style.width = "100%";
+      particlesContainer.style.height = "100%";
+      particlesContainer.style.pointerEvents = "none";
+      particlesContainer.style.zIndex = "1";
+      document.body.appendChild(particlesContainer);
+
+      const particleCount = 30;
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement("div");
+        particle.classList.add("particle");
+
+        const size = Math.random() * 5 + 2;
+        particle.style.width = size + "px";
+        particle.style.height = size + "px";
+
+        particle.style.background = Math.random() > 0.5 ? "#6366f1" : "#ec4899";
+        particle.style.left = Math.random() * 100 + "%";
+        particle.style.top = Math.random() * 100 + "%";
+
+        const duration = Math.random() * 20 + 10;
+        const delay = Math.random() * 5;
+
+        particle.style.animation = `float ${duration}s ${delay}s infinite ease-in-out`;
+
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    createParticles();
+
+    // Add float animation
+    const style = document.createElement("style");
+    style.textContent = `
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) translateX(0px);
+            }
+            25% {
+                transform: translateY(-40px) translateX(20px);
+            }
+            50% {
+                transform: translateY(20px) translateX(-20px);
+            }
+            75% {
+                transform: translateY(-20px) translateX(40px);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+  </script>
 </html>
